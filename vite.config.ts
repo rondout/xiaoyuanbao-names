@@ -2,7 +2,7 @@
  * @Author: shufei.han
  * @Date: 2024-09-09 12:25:29
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-09-09 15:08:12
+ * @LastEditTime: 2024-09-09 15:14:35
  * @FilePath: \xiaoyuanbao-names\vite.config.ts
  * @Description: 
  */
@@ -13,6 +13,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: 'docs'
+    outDir: 'docs',
   }
+  ,
+  base: './'
 })
