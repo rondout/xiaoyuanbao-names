@@ -1,3 +1,11 @@
+/*
+ * @Author: shufei.han
+ * @Date: 2024-09-09 12:25:29
+ * @LastEditors: shufei.han
+ * @LastEditTime: 2024-09-09 16:33:29
+ * @FilePath: \xiaoyuanbao-names\eslint.config.js
+ * @Description: 
+ */
 import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
@@ -23,6 +31,9 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+      "@typescript-eslint": {
+        "no-unused-vars": "off",
+      }
     },
   },
 )
