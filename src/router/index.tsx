@@ -2,15 +2,15 @@
  * @Author: shufei.han
  * @Date: 2024-09-09 15:26:13
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-09-09 15:32:17
+ * @LastEditTime: 2024-09-09 17:10:50
  * @FilePath: \xiaoyuanbao-names\src\router\index.tsx
  * @Description:
  */
-import { createBrowserRouter } from "react-router-dom";
+import { createHashRouter } from "react-router-dom";
 import MainLayout from "@/pages/MainLayout";
 import Login from "@/pages/Login";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
