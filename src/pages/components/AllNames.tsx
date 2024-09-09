@@ -6,10 +6,17 @@
  * @FilePath: \xiaoyuanbao-names\src\pages\components\AllNames.tsx
  * @Description:
  */
-import { Genders, GenderTextMap, getAllNames } from "@/models/name.model";
-import { Button, Drawer } from "antd";
-import { useEffect, useState } from "react";
+import {
+  Genders,
+  GenderTextMap,
+  getAllNames,
+  getSelectedNames,
+  saveSelectedNames,
+} from "@/models/name.model";
+import { Button, Drawer, Empty } from "antd";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import AllChars from "./AllChars";
+import "./allName.css";
 
 export default function AllNames(props: {
   gender: Genders;
@@ -17,15 +24,43 @@ export default function AllNames(props: {
   onClose: () => void;
 }) {
   const [allCharsOpen, setAllCharsOpen] = useState(false);
-  // eslint-disable-next-line
-//   const [allNames, setAllNames] = useState<string[]>([]);
+  const [allNames, setAllNames] = useState<string[]>([]);
+  const [selectedNames, setSelectedNames] = useState<string[]>([]);
 
-  useEffect(() => {
+  const unSelectedNames = useMemo(() => {
+    return allNames.filter((name) => !selectedNames.includes(name));
+  }, [allNames, selectedNames]);
+
+  const handleSelectName = (name: string) => {
+    const selectedNames = getSelectedNames(props.gender);
+    selectedNames.push(name);
+    setSelectedNames(selectedNames);
+    saveSelectedNames(selectedNames, props.gender);
+    initNames()
+  };
+
+  const handleCancelSelectName = (name: string) => {
+    const selectedNames = getSelectedNames(props.gender);
+    const index = selectedNames.indexOf(name);
+    selectedNames.splice(index, 1);
+    setSelectedNames(selectedNames);
+    saveSelectedNames(selectedNames, props.gender);
+    initNames()
+  };
+
+  const initNames = useCallback(() => {
     if (!props.open) {
       return;
     }
-    getAllNames(props.gender);
+    const names = getAllNames(props.gender);
+    setAllNames(names);
+    const selectedNames = getSelectedNames(props.gender);
+    setSelectedNames(selectedNames);
   }, [props.open, props.gender]);
+
+  useEffect(() => {
+    initNames()
+  }, [initNames]);
 
   const viewAllChars = () => {
     setAllCharsOpen(true);
@@ -42,8 +77,44 @@ export default function AllNames(props: {
       </Button>
       <div className="all-names">
         <h4 className="primary-text">
-          下面是所有{GenderTextMap.get(props.gender)}的名字
+          下面是
+          <span style={{ color: "red", fontWeight: "bold" }}>选中的</span>
+          {GenderTextMap.get(props.gender)}的名字
         </h4>
+      </div>
+
+      <div className="all-name-list">
+        {selectedNames.length > 0 &&
+          selectedNames.map((name) => (
+            <div
+              onClick={() => handleCancelSelectName(name)}
+              key={name}
+              className="name-item selected-name-item"
+            >
+              {name}
+            </div>
+          ))}
+        {selectedNames.length <= 0 && <Empty className="full-width"></Empty>}
+      </div>
+
+      <div className="all-names">
+        <h4 className="primary-text">
+          下面是
+          <span style={{ color: "red", fontWeight: "bold" }}>未被选中的</span>
+          {GenderTextMap.get(props.gender)}的名字
+        </h4>
+      </div>
+
+      <div className="all-name-list">
+        {unSelectedNames.map((name) => (
+          <div
+            onClick={() => handleSelectName(name)}
+            key={name}
+            className="name-item"
+          >
+            {name}
+          </div>
+        ))}
       </div>
 
       <AllChars
