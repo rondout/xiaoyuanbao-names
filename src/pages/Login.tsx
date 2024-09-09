@@ -36,7 +36,7 @@ const Login = () => {
     <div
       className="full-height flex"
       style={{
-        backgroundImage: "linear-gradient(to right, #fff, var(--primary))",
+        backgroundImage: "linear-gradient(0deg, #fff, var(--primary))",
       }}
     >
       <div
