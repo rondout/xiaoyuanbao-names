@@ -92,3 +92,8 @@ html,
 .primary-text {
     color: var(--primary);
 }
+
+/* antd */
+.ant-drawer-header-title {
+    flex-direction: row-reverse;
+}

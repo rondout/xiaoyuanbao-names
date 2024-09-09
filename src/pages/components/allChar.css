@@ -1,0 +1,21 @@
+.all-chars {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    justify-content: start;
+    align-items: center;
+    padding: 0px 18px;
+}
+.char-tag {
+    color: var(--primary);
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 16px;
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+    .close-icon {
+        margin-left: 12px;
+        color: #888;
+        font-size: 16px;
+    }
+}

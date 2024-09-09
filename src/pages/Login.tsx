@@ -14,7 +14,7 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       setLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       const result = (await formRef.current.validateFields()) as UserInfo;
       login(result);
       setLoading(false);
