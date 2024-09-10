@@ -9,11 +9,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import { getToken } from "@/models/base.model";
+import { Genders } from "@/models/name.model";
 
 export const mainSlice = createSlice({
     name: "main",
     initialState: {
         isLogin: !!getToken(),
+        allChars: new Map<Genders, string>(),
     },
     reducers: {
         setLoginState: (state, action) => {

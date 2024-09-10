@@ -2,7 +2,7 @@
  * @Author: shufei.han
  * @Date: 2024-09-09 17:16:59
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-09-09 18:33:44
+ * @LastEditTime: 2024-09-10 10:56:12
  * @FilePath: \xiaoyuanbao-names\src\models\name.model.ts
  * @Description:
  */
@@ -153,4 +153,10 @@ export function getAllNames(gender: Genders) {
     return storageNames;
   }
   return new NamesFactory(gender).names;
+}
+
+
+export interface NameDisplayData {
+  name: string;
+  selected?: boolean;
 }
