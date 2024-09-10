@@ -1,3 +1,11 @@
+/*
+ * @Author: shufei.han
+ * @Date: 2024-09-10 09:14:53
+ * @LastEditors: shufei.han
+ * @LastEditTime: 2024-09-10 11:23:13
+ * @FilePath: \xiaoyuanbao-names\src\pages\components\SelectedNames.tsx
+ * @Description: 
+ */
 import { Genders, GenderTextMap, getSelectedNames } from "@/models/name.model";
 import { Button } from "antd";
 import { useCallback, useEffect, useState } from "react";
@@ -33,7 +41,9 @@ export default function SelectedNames(props: { gender: Genders }) {
       <h4 className="primary-text">
         下面是为你的<span>{GenderTextMap.get(props.gender)}</span>选择的名字
       </h4>
-      <NameList names={allSelectedNames.map(name => ({ name, selected: true }))}></NameList>
+      <div style={{padding: '0 16px'}}>
+        <NameList names={allSelectedNames.map(name => ({ name, selected: true }))}></NameList>
+      </div>
       <Button style={{ marginTop: 32 }} onClick={handleSelectOpen}>继续选择</Button>
       <AllNames onClose={handleCloseDrawer} gender={props.gender} open={allNamesOpen}></AllNames>
     </div>
