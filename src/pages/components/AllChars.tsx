@@ -6,17 +6,14 @@
  * @FilePath: \xiaoyuanbao-names\src\pages\components\AllChars.tsx
  * @Description:
  */
-import { Genders, getChars } from "@/models/name.model";
+import { Genders } from "@/models/name.model";
 import "./allChar.css";
 import { CloseOutlined } from "@ant-design/icons";
 import { Button, Drawer } from "antd";
+import useName from "@/hooks/useName";
 
 export default function AllChars(props: { gender: Genders; open?: boolean; onClose?: () => void }) {
-  const allChars = getChars(props.gender);
-
-  const handleDelete = (char: string) => {
-    console.log(char);
-  };
+  const { allChars, deleteChar } = useName(props.gender)
 
   return (
     <Drawer title="所有的文字" open={props.open} onClose={props.onClose}>
@@ -25,7 +22,7 @@ export default function AllChars(props: { gender: Genders; open?: boolean; onClo
           <div className="char-tag" style={{ fontSize: 20 }} key={char}>
             {char}
             <CloseOutlined
-              onClick={() => handleDelete(char)}
+              onClick={() => deleteChar(char)}
               className="close-icon"
             />
           </div>

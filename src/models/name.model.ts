@@ -2,10 +2,15 @@
  * @Author: shufei.han
  * @Date: 2024-09-09 17:16:59
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-09-10 10:56:12
+ * @LastEditTime: 2024-09-10 12:09:33
  * @FilePath: \xiaoyuanbao-names\src\models\name.model.ts
  * @Description:
  */
+export enum Genders {
+  BOY = "BOY",
+  GIRL = "GIRL",
+}
+
 export const girlChars = ["莹", "雪", "琳", "晗", "涵", "琴", "晴", "丽", "美", "瑶", "梦",
   "茜", "倩", "希", "夕", "梅", "月", "悦", "乐", "彤", "珍", "依", "沫", "玉", "灵",
   "婷", "菲", "萱", "欣", "薇", "佳", "可", "芳", "芬", "慧", "俊", "盈", "慈", "璇",
@@ -16,17 +21,30 @@ export const girlChars = ["莹", "雪", "琳", "晗", "涵", "琴", "晴", "丽"
   "羡", "冉", "晨", "宗", "研", "艾", "金", "育", "歆", "永", "君", "新", "霞", "芮",
   "淇", "方", "敏"
 ]
+export const boyChars = ["飞", "川", "勇", "刚", "间"];
 
-export enum Genders {
-  BOY = "BOY",
-  GIRL = "GIRL",
-}
+export const GenderTextMap = new Map<Genders, string>([
+  [Genders.BOY, "皮夹克"],
+  [Genders.GIRL, "小棉袄"],
+]);
+
+export const CharsMap = new Map<Genders, string[]>([
+  [Genders.BOY, boyChars],
+  [Genders.GIRL, girlChars],
+]);
+export const CHAR_STORAGE_KEY_BOY = "boy-chars";
+export const CHAR_STORAGE_KEY_GIRL = "girl-chars";
 
 export const NAME_STORAGE_KEY_BOY = "boy-names";
 export const NAME_STORAGE_KEY_GIRL = "girl-names";
 
 export const SELECTED_NAMES_KEY_BOY = "selected-names-boy";
 export const SELECTED_NAMES_KEY_GIRL = "selected-names-girl";
+
+export const CHAR_STORAGE_KEY_MAP = new Map<Genders, string>([
+  [Genders.BOY, CHAR_STORAGE_KEY_BOY],
+  [Genders.GIRL, CHAR_STORAGE_KEY_GIRL],
+]);
 
 export const NameStorageKeyMap = new Map<Genders, string>([
   [Genders.BOY, NAME_STORAGE_KEY_BOY],
@@ -69,20 +87,13 @@ export const saveSelectedNames = (names: string[], gender: Genders) => {
   localStorage.setItem(SelectedNameKeyMap.get(gender), JSON.stringify(names));
 };
 
-export const boyChars = ["飞", "川", "勇", "刚", "间"];
-
-export const GenderTextMap = new Map<Genders, string>([
-  [Genders.BOY, "皮夹克"],
-  [Genders.GIRL, "小棉袄"],
-]);
-
-export const CharsMap = new Map<Genders, string[]>([
-  [Genders.BOY, boyChars],
-  [Genders.GIRL, girlChars],
-]);
 export const getChars = (gender: Genders): string[] => {
-  const storageChars = localStorage.getItem(gender);
+  const storageChars = localStorage.getItem(CHAR_STORAGE_KEY_MAP.get(gender));
   return storageChars ? JSON.parse(storageChars) : CharsMap.get(gender);
+};
+
+export const setCharsToStorage = (chars: string[], gender: Genders) => {
+  localStorage.setItem(CHAR_STORAGE_KEY_MAP.get(gender), JSON.stringify(chars));
 };
 
 export class NamesFactory {

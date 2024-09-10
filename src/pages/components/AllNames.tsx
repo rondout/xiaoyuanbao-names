@@ -2,23 +2,17 @@
  * @Author: shufei.han
  * @Date: 2024-09-09 18:11:04
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-09-10 11:04:12
+ * @LastEditTime: 2024-09-10 11:52:15
  * @FilePath: \xiaoyuanbao-names\src\pages\components\AllNames.tsx
  * @Description:
  */
-import {
-  Genders,
-  GenderTextMap,
-  getAllNames,
-  getSelectedNames,
-  NameDisplayData,
-  saveSelectedNames,
-} from "@/models/name.model";
+import { Genders, GenderTextMap, } from "@/models/name.model";
 import { Button, Drawer } from "antd";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import AllChars from "./AllChars";
 import "./allName.css";
 import NameList from "./NameList";
+import useName from "@/hooks/useName";
 
 export default function AllNames(props: {
   gender: Genders;
@@ -26,63 +20,13 @@ export default function AllNames(props: {
   onClose: () => void;
 }) {
   const [allCharsOpen, setAllCharsOpen] = useState(false);
-  const [allNames, setAllNames] = useState<string[]>([]);
-  const [selectedNames, setSelectedNames] = useState<string[]>([]);
 
-  const handleSelectName = (data: NameDisplayData) => {
-    if(data.selected) {
-      handleCancelSelectName(data)
-      return
-    }
-    const selectedNames = getSelectedNames(props.gender);
-    selectedNames.push(data.name);
-    setSelectedNames(selectedNames);
-    saveSelectedNames(selectedNames, props.gender);
-    initNames();
-  };
-
-  const handleCancelSelectName = (data: NameDisplayData) => {
-    const selectedNames = getSelectedNames(props.gender);
-    const index = selectedNames.indexOf(data.name);
-    selectedNames.splice(index, 1);
-    setSelectedNames(selectedNames);
-    saveSelectedNames(selectedNames, props.gender);
-    initNames();
-  };
-
-  const initNames = useCallback(() => {
-    if (!props.open) {
-      return;
-    }
-    const names = getAllNames(props.gender);
-    setAllNames(names);
-    const selectedNames = getSelectedNames(props.gender);
-    setSelectedNames(selectedNames);
-  }, [props.open, props.gender]);
-
-  useEffect(() => {
-    initNames();
-  }, [initNames]);
+  const { displayNameData, setSelectName } = useName(props.gender)
 
   const viewAllChars = () => {
     setAllCharsOpen(true);
   };
 
-  const computedNameData = useMemo(() => {
-    const all: NameDisplayData[] = allNames.map((name) => {
-      return {
-        name,
-        selected: selectedNames.includes(name),
-      };
-    });
-    const selected: NameDisplayData[] = selectedNames.map((name) => {
-      return {
-        name,
-        selected: true,
-      };
-    });
-    return { all, selected }
-  }, [allNames, selectedNames]);
 
   return (
     <Drawer
@@ -101,7 +45,7 @@ export default function AllNames(props: {
         </h4>
       </div>
 
-      <NameList names={computedNameData.selected} onClick={handleCancelSelectName}></NameList>
+      <NameList names={displayNameData.selected} onClick={setSelectName}></NameList>
 
       <div className="all-names">
         <h4 className="primary-text">
@@ -111,7 +55,7 @@ export default function AllNames(props: {
         </h4>
       </div>
 
-      <NameList names={computedNameData.all} onClick={handleSelectName}></NameList>
+      <NameList names={displayNameData.all} onClick={setSelectName}></NameList>
 
       <AllChars
         open={allCharsOpen}

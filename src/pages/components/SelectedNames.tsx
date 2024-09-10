@@ -2,37 +2,28 @@
  * @Author: shufei.han
  * @Date: 2024-09-10 09:14:53
  * @LastEditors: shufei.han
- * @LastEditTime: 2024-09-10 11:23:13
+ * @LastEditTime: 2024-09-10 11:43:09
  * @FilePath: \xiaoyuanbao-names\src\pages\components\SelectedNames.tsx
  * @Description: 
  */
-import { Genders, GenderTextMap, getSelectedNames } from "@/models/name.model";
+import { Genders, GenderTextMap } from "@/models/name.model";
 import { Button } from "antd";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import AllNames from "./AllNames";
 import "./allName.css"
 import NameList from "./NameList";
+import useName from "@/hooks/useName";
 
 export default function SelectedNames(props: { gender: Genders }) {
   const [allNamesOpen, setAllNamesOpen] = useState(false);
-  const [allSelectedNames, steAllSelectedNames] = useState<string[]>([]);
 
-  const getAllSelectedNames = useCallback(() => {
-    const names = getSelectedNames(props.gender);
-    steAllSelectedNames(names);
-  }, [props.gender]);
+  const {allSelectedNames} = useName(props.gender)
 
-  useEffect(() => {
-    getAllSelectedNames()
-  }, [
-    getAllSelectedNames
-  ])
   const handleSelectOpen = () => {
     setAllNamesOpen(true);
   };
 
   const handleCloseDrawer = () => {
-    getAllSelectedNames()
     setAllNamesOpen(false);
   };
 
