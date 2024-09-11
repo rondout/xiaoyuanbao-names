@@ -30,7 +30,7 @@ export default function MainLayout() {
 
   return (
     <div style={{ padding: 12 }}>
-      <div className="flex" style={{ marginBottom: 24 }}>
+      <div className="flex" style={{ marginBottom: 24, marginTop: 16 }}>
         <Radio.Group
           onChange={handleGenderChange}
           value={currentGender}

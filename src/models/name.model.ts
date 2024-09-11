@@ -56,10 +56,11 @@ export const SelectedNameKeyMap = new Map<Genders, string>([
   [Genders.GIRL, SELECTED_NAMES_KEY_GIRL],
 ]);
 
+/** 将所有的名字存储至localStorage */
 export const saveNamesToStorage = (names: string[], gender: Genders) => {
   localStorage.setItem(NameStorageKeyMap.get(gender), JSON.stringify(names));
 };
-
+/** 从localStorage 中获取所有的名字 */
 export const getNamesFromStorage = (gender: Genders): string[] => {
   try {
     const names = JSON.parse(
@@ -70,7 +71,7 @@ export const getNamesFromStorage = (gender: Genders): string[] => {
     }
   } catch (error) { }
 };
-
+/** 获取所有的已选的名字 */
 export const getSelectedNames = (gender: Genders): string[] => {
   try {
     const storageNames = JSON.parse(localStorage.getItem(SelectedNameKeyMap.get(gender)));
@@ -82,16 +83,16 @@ export const getSelectedNames = (gender: Genders): string[] => {
     return []
   }
 };
-
+/** 存储已选的名字 */
 export const saveSelectedNames = (names: string[], gender: Genders) => {
   localStorage.setItem(SelectedNameKeyMap.get(gender), JSON.stringify(names));
 };
-
+/** 获取所有的字 */
 export const getChars = (gender: Genders): string[] => {
   const storageChars = localStorage.getItem(CHAR_STORAGE_KEY_MAP.get(gender));
   return storageChars ? JSON.parse(storageChars) : CharsMap.get(gender);
 };
-
+/* 保存字 */
 export const setCharsToStorage = (chars: string[], gender: Genders) => {
   localStorage.setItem(CHAR_STORAGE_KEY_MAP.get(gender), JSON.stringify(chars));
 };

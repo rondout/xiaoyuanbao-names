@@ -13,6 +13,7 @@ import AllChars from "./AllChars";
 import "./allName.css";
 import NameList from "./NameList";
 import useName from "@/hooks/useName";
+import AddChar from "./AddChar";
 
 export default function AllNames(props: {
   gender: Genders;
@@ -20,6 +21,7 @@ export default function AllNames(props: {
   onClose: () => void;
 }) {
   const [allCharsOpen, setAllCharsOpen] = useState(false);
+  const [addCharOpen, setAddCharOpen] = useState(false);
 
   const { displayNameData, setSelectName } = useName(props.gender)
 
@@ -61,7 +63,9 @@ export default function AllNames(props: {
         open={allCharsOpen}
         onClose={() => setAllCharsOpen(false)}
         gender={props.gender}
+        onAddChar={() => setAddCharOpen(true)}
       ></AllChars>
+      <AddChar open={addCharOpen} gender={props.gender} onCancel={() => setAddCharOpen(false)}></AddChar>
     </Drawer>
   );
 }

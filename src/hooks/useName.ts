@@ -7,7 +7,7 @@
  * @Description: 
  */
 import { Genders, NameDisplayData } from "@/models/name.model";
-import { selectAllChars, selectAllNames, selectAllSelectedNames, setAllCharsAction, setSelectedNameAction } from "@/store/main";
+import { deleteNamesAfterDeleteCharAction, selectAllChars, selectAllNames, selectAllSelectedNames, setAllCharsAction, setSelectedNameAction } from "@/store/main";
 import { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -23,6 +23,7 @@ export default function useName(gender: Genders) {
 
     const deleteChar = useCallback((char: string) => {
         dispatch(setAllCharsAction({ gender, char, type: 'DELETE' }))
+        dispatch(deleteNamesAfterDeleteCharAction({ char, gender }))
     }, [gender])
 
 

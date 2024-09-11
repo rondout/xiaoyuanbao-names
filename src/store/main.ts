@@ -9,7 +9,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import { getToken } from "@/models/base.model";
-import { Genders, getAllNames, getChars, getSelectedNames, NameDisplayData, saveSelectedNames, setCharsToStorage } from "@/models/name.model";
+import { Genders, getAllNames, getChars, getSelectedNames, NameDisplayData, saveNamesToStorage, saveSelectedNames, setCharsToStorage } from "@/models/name.model";
 
 export const mainSlice = createSlice({
     name: "main",
@@ -53,11 +53,23 @@ export const mainSlice = createSlice({
                 state.allSelectedNames[gender].push(data.name)
                 saveSelectedNames(state.allSelectedNames[gender], gender)
             }
+        },
+        /** 删除字后要同步删除所有的和这个字相关的名字 */
+        deleteNamesAfterDeleteCharAction(state, payload: PayloadAction<{ gender: Genders, char: string }>) {
+            const { gender, char } = payload.payload
+            // 删除和这个字有关的所有名字
+            const currentAllNames = state.allNames[gender]
+            state.allNames[gender] = currentAllNames.filter(name => !name.includes(char))
+            saveNamesToStorage(state.allNames[gender], gender)   
+            // 删除和这个字有关的所有已选择名字
+            const currentAllSelectedNames = state.allSelectedNames[gender]
+            state.allSelectedNames[gender] = currentAllSelectedNames.filter(name => !name.includes(char))
+            saveSelectedNames(state.allSelectedNames[gender], gender)
         }
     },
 });
 
-export const { setLoginState, setAllCharsAction, setSelectedNameAction } = mainSlice.actions;
+export const { setLoginState, setAllCharsAction, setSelectedNameAction, deleteNamesAfterDeleteCharAction } = mainSlice.actions;
 
 export const selectIsLogin = (state: RootState) => state.main.isLogin;
 export const selectAllChars = (state: RootState) => state.main.allChars;
