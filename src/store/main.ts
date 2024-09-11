@@ -9,7 +9,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import { getToken } from "@/models/base.model";
-import { Genders, getAllNames, getChars, getSelectedNames, NameDisplayData, saveNamesToStorage, saveSelectedNames, setCharsToStorage } from "@/models/name.model";
+import { Genders, getAllNames, getChars, getSelectedNames, NameDisplayData, saveNamesToStorage, saveSelectedNames, setCharsToStorage, updateNamesAfterAddChar } from "@/models/name.model";
 
 export const mainSlice = createSlice({
     name: "main",
@@ -32,17 +32,25 @@ export const mainSlice = createSlice({
         setLoginState: (state, action) => {
             state.isLogin = action.payload
         },
-        setAllCharsAction: (state, action: PayloadAction<{ gender: Genders, char?: string, type: "ADD" | "DELETE" }>) => {
-            const currentChars = state.allChars[action.payload.gender]
-            if (action.payload.type === "ADD") {
-                if (currentChars.includes(action.payload.char!)) {
+        initStoreNamesAction(state) {
+            state.allNames = {
+                [Genders.BOY]: getAllNames(Genders.BOY),
+                [Genders.GIRL]: getAllNames(Genders.GIRL)
+            }
+        },
+        setAllCharsAction: (state, action: PayloadAction<{ gender: Genders, char: string, type: "ADD" | "DELETE" }>) => {
+            const { gender, char, type } = action.payload
+            const currentChars = state.allChars[gender]
+            if (type === "ADD") {
+                if (currentChars.includes(char!)) {
                     throw "当前文字已存在"
                 }
-                state.allChars[action.payload.gender] = [...currentChars, action.payload.char!]
-            } else {
-                state.allChars[action.payload.gender] = currentChars.filter(char => char !== action.payload.char)
+                state.allChars[gender] = [...currentChars, char!]
+                updateNamesAfterAddChar(gender, char)
+            } else if (type === "DELETE") {
+                state.allChars[gender] = currentChars.filter(item => item !== char)
             }
-            setCharsToStorage(state.allChars[action.payload.gender], action.payload.gender)
+            setCharsToStorage(state.allChars[gender], gender)
         },
         setSelectedNameAction: (state, action: PayloadAction<{ data: NameDisplayData; gender: Genders }>) => {
             const { data, gender } = action.payload
@@ -69,7 +77,7 @@ export const mainSlice = createSlice({
     },
 });
 
-export const { setLoginState, setAllCharsAction, setSelectedNameAction, deleteNamesAfterDeleteCharAction } = mainSlice.actions;
+export const { setLoginState, setAllCharsAction, setSelectedNameAction, deleteNamesAfterDeleteCharAction, initStoreNamesAction } = mainSlice.actions;
 
 export const selectIsLogin = (state: RootState) => state.main.isLogin;
 export const selectAllChars = (state: RootState) => state.main.allChars;
