@@ -47,7 +47,10 @@ export default function AllNames(props: {
         </h4>
       </div>
 
-      <NameList names={displayNameData.selected} onClick={setSelectName}></NameList>
+      {
+        props.open &&
+        <NameList names={displayNameData.selected} onClick={setSelectName}></NameList>
+      }
 
       <div className="all-names">
         <h4 className="primary-text">
@@ -56,8 +59,10 @@ export default function AllNames(props: {
           {GenderTextMap.get(props.gender)}的名字
         </h4>
       </div>
-
-      <NameList names={displayNameData.all} onClick={setSelectName}></NameList>
+      {
+        props.open &&
+        <NameList names={displayNameData.all} onClick={setSelectName}></NameList>
+      }
 
       <AllChars
         open={allCharsOpen}

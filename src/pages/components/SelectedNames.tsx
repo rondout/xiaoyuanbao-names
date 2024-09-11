@@ -34,6 +34,10 @@ export default function SelectedNames(props: { gender: Genders }) {
       </h4>
       <div style={{padding: '0 16px'}}>
         <NameList names={allSelectedNames.map(name => ({ name, selected: true }))}></NameList>
+        <div style={{padding: '16px 0'}}>
+          已选择
+          <span className="primary-text" style={{fontWeight: 'bold', padding: '0 8px'}}>{allSelectedNames.length}</span>个名字
+        </div>
       </div>
       <Button style={{ marginTop: 32 }} onClick={handleSelectOpen}>继续选择</Button>
       <AllNames onClose={handleCloseDrawer} gender={props.gender} open={allNamesOpen}></AllNames>

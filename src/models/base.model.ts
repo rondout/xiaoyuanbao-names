@@ -6,9 +6,12 @@
  * @FilePath: \xiaoyuanbao-names\src\models\base.model.ts
  * @Description:  
  */
+import { version } from "../../package.json"
+
 export const TOKEN_KEY = "token";
 export const REMEBER_KEY = "remeber";
 export const USER_KEY = "user";
+export const STORAGE_VERSION_KEY = "current-version";
 
 export interface UserInfo {
     username: string;
@@ -58,3 +61,11 @@ export const userList: UserInfo[] = [
         password: "Hsf5898048430",
     }
 ]
+
+export const initLocalStorage = () => {
+    const storageVersion = localStorage.getItem(STORAGE_VERSION_KEY)
+    if (storageVersion !== version) {
+        localStorage.clear()
+        localStorage.setItem(STORAGE_VERSION_KEY, version)
+    }
+}

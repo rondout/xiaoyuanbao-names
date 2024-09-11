@@ -121,7 +121,10 @@ export function updateNamesAfterAddChar(gender: Genders, char: string) {
   saveNamesToStorage(currentAllNames, gender)
 }
 
-export interface NameDisplayData {
+export interface BaseNameData {
   name: string;
+}
+
+export interface NameDisplayData extends BaseNameData {
   selected?: boolean;
 }
