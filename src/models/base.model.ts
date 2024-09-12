@@ -7,12 +7,33 @@
  * @Description:  
  */
 import { version } from "../../package.json"
+import { Genders } from "./name.model";
 
 export const TOKEN_KEY = "token";
 export const REMEBER_KEY = "remeber";
 export const USER_KEY = "user";
 export const STORAGE_VERSION_KEY = "current-version";
+export const PRIMARY_KEY_BOY = 'theme-color-boy'
+export const PRIMARY_KEY_GIRL = 'theme-color-girl'
+export const DEFAULT_PRIMARY = '#3f51b5'
 
+export const ThemeKeyMap = new Map<Genders, string>([
+    [Genders.BOY, PRIMARY_KEY_BOY],
+    [Genders.GIRL, PRIMARY_KEY_GIRL]
+])
+
+export interface ThemeColor {
+    [Genders.BOY]: string;
+    [Genders.GIRL]: string;
+}
+
+export const getThemeFromStorage = (gender: Genders) => {
+    return localStorage.getItem(ThemeKeyMap.get(gender)) || DEFAULT_PRIMARY
+}
+
+export const setThemeToStorage = (color: string, gender: Genders) => {
+    localStorage.setItem(ThemeKeyMap.get(gender), color)
+}
 export interface UserInfo {
     username: string;
     password: string;

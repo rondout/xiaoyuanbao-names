@@ -36,8 +36,8 @@ export default function AllNames(props: {
       open={props.open}
       onClose={props.onClose}
     >
-      <Button onClick={viewAllChars} type="primary">
-        查看所有的文字
+      <Button onClick={viewAllChars} type="primary" danger>
+        自定义所有的文字
       </Button>
       <div className="all-names">
         <h4 className="primary-text">

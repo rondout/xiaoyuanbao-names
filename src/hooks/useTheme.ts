@@ -6,28 +6,22 @@
  * @FilePath: \xiaoyuanbao-names\src\hooks\useTheme.ts
  * @Description: 
  */
-import { useCallback, useEffect, useState } from "react"
-
-export const PRIMARY_KEY = 'theme-color'
-export const DEFAULT_PRIMARY = '#3f51b5'
-
-export const getThemeFromStorage = () => {
-    return localStorage.getItem(PRIMARY_KEY) || DEFAULT_PRIMARY
-}
-
-export const setThemeToStorage = (color: string) => {
-    localStorage.setItem(PRIMARY_KEY, color)
-}
+import { setThemeToStorage } from "@/models/base.model"
+import { selectCurrentGender, selectTheme, setThemeAction } from "@/store/main"
+import { useCallback, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 export default function useTheme(): [string, (color: string) => void] {
-    const [colorPrimary, setTheme] = useState(getThemeFromStorage)
+    const gender = useSelector(selectCurrentGender)
+    const colorPrimary = useSelector(selectTheme)
+    const dispatch = useDispatch()
 
     const setColorToDocument =  useCallback(() => {
         document.documentElement.style.setProperty('--primary', colorPrimary)
     }, [colorPrimary])
 
     const changePrimary = (color: string) => {
-        setTheme(color)
-        setThemeToStorage(color)
+        dispatch(setThemeAction(color))
+        setThemeToStorage(color, gender)
     }
 
     useEffect(() => {

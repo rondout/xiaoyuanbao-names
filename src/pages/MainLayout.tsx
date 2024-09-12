@@ -11,17 +11,17 @@ import { Navigate } from "react-router-dom";
 import SelectedNames from "./components/SelectedNames";
 import { Radio, RadioChangeEvent } from "antd";
 import { Genders, GenderTextMap } from "@/models/name.model";
-import { useState } from "react";
+import ThemeChanger from "./components/ThemeChanger";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentGender, setGenderAction } from "@/store/main";
 
 export default function MainLayout() {
   const { isLogin } = useLogin();
-  const [currentGender, setGender] = useState<Genders>(
-    (localStorage.getItem("gender") as Genders) || Genders.BOY
-  );
-
+  const currentGender = useSelector(selectCurrentGender)
+  const dispatch = useDispatch()
   const handleGenderChange = (e: RadioChangeEvent) => {
-    setGender(e.target.value);
     localStorage.setItem("gender", e.target.value);
+    dispatch(setGenderAction(e.target.value as Genders))
   };
 
   if (!isLogin) {
@@ -30,6 +30,7 @@ export default function MainLayout() {
 
   return (
     <div style={{ padding: 12 }}>
+      <ThemeChanger></ThemeChanger>
       <div className="flex" style={{ marginBottom: 24, marginTop: 16 }}>
         <Radio.Group
           onChange={handleGenderChange}
