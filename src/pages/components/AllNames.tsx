@@ -14,6 +14,7 @@ import "./allName.css";
 import NameList from "./NameList";
 import useName from "@/hooks/useName";
 import AddChar from "./AddChar";
+import RandomGenerate from "./RandomGenerate";
 
 export default function AllNames(props: {
   gender: Genders;
@@ -36,9 +37,12 @@ export default function AllNames(props: {
       open={props.open}
       onClose={props.onClose}
     >
-      <Button onClick={viewAllChars} type="primary" danger>
-        自定义所有的文字
-      </Button>
+      <div className="flex-start">
+        <Button style={{ marginRight: "16px" }} onClick={viewAllChars} type="primary" danger>
+          自定义所有的文字
+        </Button>
+        <RandomGenerate gender={props.gender}></RandomGenerate>
+      </div>
       <div className="all-names">
         <h4 className="primary-text">
           下面是
@@ -48,21 +52,21 @@ export default function AllNames(props: {
       </div>
 
       {
-        props.open &&
-        <NameList names={displayNameData.selected} onClick={setSelectName}></NameList>
-      }
+    props.open &&
+      <NameList names={displayNameData.selected} onClick={setSelectName}></NameList>
+  }
 
-      <div className="all-names">
-        <h4 className="primary-text">
-          下面是
-          <span style={{ color: "red", fontWeight: "bold" }}>未被选中的</span>
-          {GenderTextMap.get(props.gender)}的名字
-        </h4>
-      </div>
-      {
-        props.open &&
-        <NameList names={displayNameData.all} onClick={setSelectName}></NameList>
-      }
+  <div className="all-names">
+    <h4 className="primary-text">
+      下面是
+      <span style={{ color: "red", fontWeight: "bold" }}>未被选中的</span>
+      {GenderTextMap.get(props.gender)}的名字
+    </h4>
+  </div>
+  {
+    props.open &&
+      <NameList names={displayNameData.all} onClick={setSelectName}></NameList>
+  }
 
       <AllChars
         open={allCharsOpen}
@@ -71,6 +75,6 @@ export default function AllNames(props: {
         onAddChar={() => setAddCharOpen(true)}
       ></AllChars>
       <AddChar open={addCharOpen} gender={props.gender} onCancel={() => setAddCharOpen(false)}></AddChar>
-    </Drawer>
+    </Drawer >
   );
 }

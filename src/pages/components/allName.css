@@ -31,3 +31,11 @@
         margin: 0 8px;
     }
 }
+
+.random-name-display {
+    color: var(--primary);
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    padding: 32px;
+}
