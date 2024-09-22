@@ -90,3 +90,12 @@ export const initLocalStorage = () => {
         localStorage.setItem(STORAGE_VERSION_KEY, version)
     }
 }
+
+export function getRandomInteger(min: number, max: number): number {
+    // 确保 min 不大于 max
+    min = Math.ceil(min);
+    max = Math.floor(max);
+
+    // 返回一个在 [min, max] 范围内的随机整数
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
